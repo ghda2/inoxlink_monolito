@@ -11,7 +11,8 @@ services:
       - .env
     command: uvicorn app:app --host 0.0.0.0 --port 8000
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   img-service:
     build: .
@@ -23,7 +24,8 @@ services:
       - .env
     command: uvicorn core.img:app --host 0.0.0.0 --port 9090
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:15
@@ -37,6 +39,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./bd.sql:/docker-entrypoint-initdb.d/bd.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d inoxlink_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Meus Posts{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Meus Posts</h1>
+    {% for post in posts %}
+    <article class="post">
+        <h2>{{ post.titulo }}</h2>
+        {% if post.subtitulo %}
+        <h3>{{ post.subtitulo }}</h3>
+        {% endif %}
+        <p>{{ post.conteudo }}</p>
+        {% if post.url_imagem_principal %}
+        <img src="{{ post.url_imagem_principal }}" alt="{{ post.titulo }}">
+        {% endif %}
+        <small>Publicado em {{ post.data_criacao.strftime('%d/%m/%Y') }}</small>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}

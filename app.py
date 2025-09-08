@@ -18,7 +18,9 @@ app.include_router(router)
 app.include_router(sitemap_router)
 
 # Inicializar banco de dados
-init_db()
+@app.on_event("startup")
+def on_startup():
+    init_db()
 
 @app.get("/")
 def read_root():

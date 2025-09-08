@@ -1,18 +1,24 @@
-import sqlite3
-from pathlib import Path
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 
-DATABASE_PATH = Path("database.db")
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
 
 def init_db():
-    conn = sqlite3.connect(DATABASE_PATH)
-    cursor = conn.cursor()
-    # Criar tabelas conforme bd.sql
-    with open("bd.sql", "r") as f:
-        sql = f.read()
-    cursor.executescript(sql)
-    conn.commit()
-    conn.close()
+    Base.metadata.create_all(bind=engine)
 
 def get_db():
-    conn = sqlite3.connect(DATABASE_PATH)
-    return conn
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

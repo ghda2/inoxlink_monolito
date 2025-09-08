@@ -1,9 +1,10 @@
--- Estrutura do Banco de Dados
+-- Estrutura do Banco de Dados PostgreSQL
 
 CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
-    email TEXT NOT NULL
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Adicione mais tabelas conforme necessário

@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Home - Meus Posts{% endblock %}
+{% block title %}Home - Inoxlink{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>Meus Posts</h1>
-    {% for post in posts %}
-    <article class="post">
-        <h2>{{ post.titulo }}</h2>
-        {% if post.subtitulo %}
-        <h3>{{ post.subtitulo }}</h3>
-        {% endif %}
-        <p>{{ post.conteudo }}</p>
-        {% if post.url_imagem_principal %}
-        <img src="{{ post.url_imagem_principal }}" alt="{{ post.titulo }}">
-        {% endif %}
-        <small>Publicado em {{ post.data_criacao.strftime('%d/%m/%Y') }}</small>
-    </article>
-    {% endfor %}
+    <h1>Posts Recentes</h1>
+    {% if posts %}
+        {% for post in posts %}
+        <article class="post">
+            <h2>{{ post.titulo }}</h2>
+            {% if post.subtitulo %}
+            <h3>{{ post.subtitulo }}</h3>
+            {% endif %}
+            {% if post.url_imagem_principal %}
+            <img src="{{ post.url_imagem_principal }}" alt="{{ post.titulo }}" class="post-image">
+            {% endif %}
+            <p>{{ post.conteudo | truncate(200) }}</p>
+            <p><small>Publicado em {{ post.data_criacao.strftime('%d/%m/%Y') }} por {{ post.autor.nome if post.autor else 'Anônimo' }}</small></p>
+            <a href="/posts/{{ post.id }}">Leia mais</a>
+        </article>
+        {% endfor %}
+    {% else %}
+        <p>Nenhum post encontrado.</p>
+    {% endif %}
 </div>
 {% endblock %}

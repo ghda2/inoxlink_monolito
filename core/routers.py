@@ -46,8 +46,9 @@ class CommentCreate(BaseModel):
 
 # Rotas para templates
 @router.get("/index")
-def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+def index(request: Request, db: Session = Depends(get_db)):
+    posts = db.query(Post).filter(Post.status == 'published').all()
+    return templates.TemplateResponse("index.html", {"request": request, "posts": posts})
 
 # CRUD para Autores
 @router.post("/autores/")

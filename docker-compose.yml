@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: uvicorn app:app --host 0.0.0.0 --port 8000
+
+  img-service:
+    build: .
+    ports:
+      - "9090:9090"  # Porta pouco usual para evitar conflitos
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: uvicorn core.img:app --host 0.0.0.0 --port 9090

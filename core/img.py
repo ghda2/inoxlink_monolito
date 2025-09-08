@@ -6,7 +6,7 @@ from pathlib import Path
 
 app = FastAPI(title="Image API", description="API para gerenciar imagens")
 
-IMG_DIR = Path("../static/img")  # Ajustado para o caminho relativo de core/
+IMG_DIR = Path(__file__).parent.parent / "static" / "img"  # Caminho absoluto baseado no diretório do script
 
 # Garantir que o diretório existe
 IMG_DIR.mkdir(parents=True, exist_ok=True)

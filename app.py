@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi import Request
 from core.routers import router
 from core.db import init_db
 from core.sitemap import router as sitemap_router
@@ -23,5 +24,5 @@ def on_startup():
     init_db()
 
 @app.get("/")
-def read_root():
-    return {"message": "Sistema FastAPI rodando"}
+def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
